@@ -36,8 +36,7 @@ class Cell {
         }
     }
     logic(dtt) {
-        const SPEED = 320;
-        const dy = dtt * SPEED;
+        const dy = dtt * CELL_SPEED;
         if (this.isFalling) {
             this.y += dy;
         }

@@ -1,8 +1,8 @@
 const grid = new Grid(COLS_COUNT, ROWS_COUNT);
-let score = 0;
 const scoreEl = document.getElementById('score');
 
 function render() {
+    scoreEl.innerHTML = '' + grid.score;
     ctx.save();
     ctx.fillStyle = '#fff';
     ctx.fillRect(
@@ -31,21 +31,17 @@ function logic(dtt) {
     grid.logic(dtt);
 }
 ctx.canvas.addEventListener('click', e => {
-    const mx = e.offsetX + X_OFFSET;
-    const my = e.offsetY + Y_OFFSET;
+    const mx = e.offsetX - X_OFFSET;
+    const my = e.offsetY - Y_OFFSET;
     const mc = ~~(mx / CELL_SIZE);
     const mr = ~~(my / CELL_SIZE);
-
-    const cell = grid.getCell(mc, mr );
+    const cell = grid.getCell(mc, mr);
     if (cell) {
-        //cell.isSelected = !cell.isSelected;
         const selected = grid.findSelected(cell);
+        //cell.isSelected = !cell.isSelected;
         if (selected.length === 4 && selected.every(p => !p.isFalling)) {
-            score++;
-            scoreEl.innerHTML = '' + score;
             selected.forEach(selectedCell => {
-                selectedCell.isSelected = true;
-                //grid.removeCell(cell);
+                selectedCell.isSelected = true; // !selectedCell.isSelected;
             });
         }
     }

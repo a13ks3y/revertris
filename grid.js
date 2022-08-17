@@ -3,6 +3,7 @@ class Grid {
     constructor(colsCount, rowsCount) {
         this.colsCount = colsCount;
         this.rowsCount = rowsCount;
+        this.score = 0;
     }
     forEach(callback) {
         for (let c = 0; c < this.colsCount; c++) {
@@ -38,17 +39,23 @@ class Grid {
                 fallingCells.push(cell);
             }
             if (cell.r === 0 && !cell.isFalling) {
+                this.score = 0;
                 this.cells = {};
             }
         });
+        let needToUpdateScore = false;
         this.forEach(cell => {
             if (cell.isSelected) {
                 this.removeCell(cell);
                 this.forEachInColumn(cell.c, cellInColumn => {
                     cellInColumn.isFalling = true;
-                })
+                });
+                needToUpdateScore = true;
             }
-        })
+        });
+        if (needToUpdateScore) {
+            this.score ++;
+        }
         if (fallingCells.length === 0) {
             this.createPiece();
         }
@@ -75,10 +82,18 @@ class Grid {
         const natureName = NATURE_NAMES[~~(Math.random()*NATURE_NAMES.length)];
         const natures = NATURES[natureName];
         const natureRotation = ~~(Math.random()*natures.length);
-        const offsetCol = ~~(Math.random() * (COLS_COUNT - 4));
         const offsetRow = 0;
         const natureColor = NATURES_COLOR_MAP[natureName];
         const nature = natures[natureRotation];
+
+        let natureColsCount = 1;
+        nature.forEach(row => {
+            if (row.length > natureColsCount) {
+                natureColsCount = row.length;
+            }
+        });
+
+        const offsetCol = ~~(Math.random() * (COLS_COUNT - natureColsCount + 1));
         for(let r = 0; r < nature.length; r++) {
             for (let c = 0; c < nature[r].length; c++) {
                 if (nature[r][c]) {
