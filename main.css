@@ -1,0 +1,19 @@
+body {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    font-family: monospace;
+    font-size: 32px;
+}
+header {
+    text-align: center;
+}
+main {
+    display: block;
+    width: 90vw;
+    height: calc(100% - 3rem);
+    margin: auto;
+}
+canvas {
+    border: 1px solid black;
+}
