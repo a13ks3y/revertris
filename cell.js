@@ -1,5 +1,5 @@
 class Cell {
-    constructor(c, r, color, size) {
+    constructor(c, r, color, size, natureName) {
         this.c = c;
         this.r = r;
         this.size = size;
@@ -8,6 +8,7 @@ class Cell {
         this.color = color;
         this.isFalling = true;
         this.isSelected = false;
+        this.natureName = natureName;
     }
     render(ctx) {
         if (this.color) {
@@ -43,7 +44,14 @@ class Cell {
         this.r = ~~(this.y / this.size);
     }
     stopFalling() {
+        if (!this.isFalling) return;
         this.isFalling = false;
         this.y = this.r * this.size;
+    }
+    changeNature() {
+        const natureNames = NATURE_NAMES.split('').filter(n => n !== this.natureName);
+        const nextName = natureNames[~~(Math.random() * natureNames.length)];
+        this.color = NATURES_COLOR_MAP[nextName];
+        this.natureName = nextName;
     }
 }
